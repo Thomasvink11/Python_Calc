@@ -1,8 +1,16 @@
-#Defining the variables
-input1 = None
-Input2 = None
-Operator = None
+#Imports
+import operator
 
+#Defining the variables
+inputs = []
+valid_modifiers = {
+    '+' : operator.add,
+    '-' : operator.sub,
+    '*' : operator.mul,
+    '/' : operator.truediv,  # use operator.div for Python 2
+    '%' : operator.mod,
+    '^' : operator.xor,
+}
 #Restart prompt on error
 
 def restart_prompt(errorMessage):
@@ -10,20 +18,33 @@ def restart_prompt(errorMessage):
   answer = input("Do you want to restart? (y/n): ")
   return answer.lower() == 'y'
 
-def askForNumberInput(inputString):
+def askForInput(inputString):
     while True:
-        number = input(inputString)
+        user_input = input(inputString)
         try:
-            number = float(number)
-            return(number)
+            user_input = float(user_input)
+            return(user_input)
             break  # Exit the loop if valid
         except ValueError:
-            if restart_prompt("Invalid input! Please enter numbers only."):
+            if valid_modifiers.get(user_input) != None:
+                return user_input
+            elif restart_prompt("Invalid input! Please enter numbers only."):
                 continue  # Restart the loop
             else:
                 break  # Exit the script
+            
 
-input1 = askForNumberInput("Enter the first value: ")
-input2 = askForNumberInput("Enter the second value: ")
+inputs.append(askForInput("Enter the first value: "))
+inputs.append(askForInput("Enter the Modifier: "))
+inputs.append(askForInput("Enter the Second value: "))
 
-print(input1, input2)
+
+
+def eval_binary_expr(op1, oper, op2):
+    op1, op2 = float(op1), float(op2)
+    return valid_modifiers[oper](op1, op2)
+
+print(eval_binary_expr(*(inputs)))
+
+
+
