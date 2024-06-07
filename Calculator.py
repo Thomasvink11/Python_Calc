@@ -12,12 +12,12 @@ valid_modifiers = {
     '^' : operator.xor,
 }
 #Restart prompt on error
-
 def restart_prompt(errorMessage):
   print(errorMessage)
   answer = input("Do you want to restart? (y/n): ")
   return answer.lower() == 'y'
 
+#Ask for input function
 def askForInput(inputString):
     while True:
         user_input = input(inputString)
